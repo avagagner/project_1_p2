@@ -1,29 +1,44 @@
-var mymap = L.map('mapid').setView([38.63775922635261, -90.28368046396037], 13);
-//https://a.tile.openstreetmap.org/{z}/{x}/{y}.png
-//'http://a.tile.stamen.com/toner/{z}/{x}/{y}.png'
-//https://wiki.openstreetmap.org/wiki/Tile_servers
-L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
-	attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	subdomains: 'abcd',
-	minZoom: 1,
-	maxZoom: 16,
-	ext: 'jpg'
-}).addTo(mymap);
+ require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/layers/FeatureLayer",
+       
+   
+      ], function (Map, MapView, FeatureLayer,) {
+ 
+        var map = new Map({
+          basemap: "hybrid"
+        });
 
-var marker = L.marker([38.63672876590212, -90.24674730564345]).addTo(mymap);
-
-var marker2 = L.marker([38.63816176328897, -90.25104626536422]).addTo(mymap);
-
-var marker3 = L.marker([38.661539699331904, -90.30894447950988]).addTo(mymap);
-
-var marker4 = L.marker([38.61714841986633, -90.27511168787689]).addTo(mymap);
-
-var marker5 = L.marker([38.64751484426265, -90.2744901289432]).addTo(mymap);
-
-
-
-marker.bindPopup("<b>Scottish Arms</b>.").openPopup();
-marker2.bindPopup("<b>Scarlett's Wine Bar</b>.").openPopup();
-marker3.bindPopup("<b>Mi Ranchito</b>.").openPopup();
-marker4.bindPopup("<b>Lorenzo's Trattoria</b>.").openPopup();
-marker4.bindPopup("<b>2Shae Cafe</b>.").openPopup();
+        var view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-122.68427265664134, 45.53420786469426],
+          scale: 5000
+        })
+   
+   
+ 
+        var featureLayer = new FeatureLayer({
+          url:"https://services5.arcgis.com/W1uyphp8h2tna3qJ/arcgis/rest/services/Buildings/FeatureServer"});
+        map.add(featureLayer);
+   
+   
+  var featureLayer = new FeatureLayer({
+     url:"https://services3.arcgis.com/8mRVhBBtAu5eqZUu/arcgis/rest/services/PortlandORMajorStreets/FeatureServer"
+   });map.add(featureLayer);
+        
+  var featureLayer = new FeatureLayer({
+     url:"https://slustl.maps.arcgis.com/home/item.html?id=da0a4ca070ae4a5ea6f98772b4d3556d"
+   });map.add(featureLayer);
+   
+ 
+  const popupTrailheads = {
+        "title": "location",
+        "content": "<b>Place:</b> {Points}<br>" }
+   
+ var featureLayer = new FeatureLayer({    url:"https://services2.arcgis.com/bB9Y1bGKerz1PTl5/arcgis/rest/services/Layer_1/FeatureServer",
+outFields: ["Points"],
+   popupTemplate: popupTrailheads                                   
+   });map.add(featureLayer);
+ });
